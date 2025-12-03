@@ -1,0 +1,15 @@
+;;; bad.egg -*- scheme -*-
+
+((synopsis "A resource dispatcher for Spiffy")
+ (author "Mario Domenech Goulart")
+ (license "BSD")
+ (category web)
+ (dependencies spiffy
+               srfi-18
+               srfi-69)
+ (test-dependencies http-client
+                    server-test
+                    test)
+ (component-options
+  (csc-options "-O0" "-d3"))
+ (components (extension bad)))
