@@ -79,8 +79,8 @@
            (resource
             (find-resource (request-method request) (request-path request))))
       (when resource
-        (resource)
-      (continue)))))
+        (resource))
+      (continue))))
 
 (define (bad-start #!key start-thread?)
   (if start-thread?
