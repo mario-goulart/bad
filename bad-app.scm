@@ -1,5 +1,5 @@
 (import big-chicken)
-(import bad spiffy srfi-13)
+(import bad spiffy srfi-1 srfi-13)
 
 (define-resource "/"
   (lambda ()
@@ -8,13 +8,18 @@
      body: "<h1>Hello World!</h1>"
      headers: '((content-type text/html)))))
 
-(define-resource (irregex "^/foo/.*$")
+(define-resource (irregex '(: bol
+                              "/mul/"
+                              (submatch-named a numeric)
+                              "/"
+                              (submatch-named b numeric)
+                              eol))
   (lambda (match)
     (send-response
      status: 'ok
-     body: (string-append "regex: "
-                          (string-translate* (->string match)
-                                             '(("<" . "&lt;") (">" . "&gt;"))))
+     body: (let ((a (string->number (irregex-match-substring match 1)))
+                 (b (string->number (irregex-match-substring match 2))))
+             (number->string (* a b)))
      headers: '((content-type text/html)))))
 
 (define-resource (lambda (path)
