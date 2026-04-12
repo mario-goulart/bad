@@ -42,8 +42,10 @@
                          (and-let* ((match (irregex-search matcher req-path)))
                            (set! result (lambda () (handler match)))))
                         ((procedure)
-                         (when (matcher req-path)
-                           (set! result (lambda () (handler req-path))))))
+                         (cond ((matcher req-path)
+                                => (lambda (ret)
+                                     (set! result (lambda ()
+                                                    (apply handler ret))))))))
                       (or result
                           (loop-matchers (cdr matchers))))))))))))
 
